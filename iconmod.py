@@ -77,8 +77,8 @@ def confirm(directory, data_confirmed):
 	return False
 
 def tryopen():
+	img = str(input("Write please the path of the image: "))
 	try:
-		img = str(input("Write please the path of the image: "))
 		open(img,'rb').close()
 		print ('Path confirmed')
 		return img
@@ -115,10 +115,11 @@ def change(app,img):
 			f.write(new_file)
 			f.close()
 			print ("\n\nAll Done my friend! :D!")
-		
+			input ("\n\nPress Enter to finalize")
 		except:
 			print ("Wops! Something Fails...")
 			print ("It seems like u dont hace permissions")
+			input ("Press ENTER to end and try to execute with sudo")
 
 	except:
 		print ("ERROR")
