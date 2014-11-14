@@ -53,7 +53,8 @@ def main():
 			change(app_confirmed,img)
 
 	else:
-		print ("APP no confirmada")
+		print ("Wrong APP name")
+		input("Press Enter to end")
 
 
 def search_in_dir(directory,app):
