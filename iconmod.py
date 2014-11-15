@@ -42,12 +42,14 @@ def main():
 
 		app_confirmed = str(input("Write the hole name of the file: "))
 		
+
+
 		if confirm(app_directory, app_confirmed):
 			print ("APP Confirmed")
 			img = tryopen()
 			if img: # If the image exist
-				if copyimg(img): # If the program can copy the image
-					name = getName(img) # Get the name of the image
+				name = getFullName(img,app_confirmed) # Name of the photo in  /opt/photos/
+				if copyimg(img, name): # If the program can copy the image
 					change(app_confirmed,"/opt/iconmod/photos/"+name) # Change the files
 				else:
 					errors.permissionError()
@@ -96,14 +98,20 @@ def tryopen(): # Try verify if the image exists
 			else:
 				pass
 
-def getName(img):
+def getName(img): # Get the last Item of a path
 	path = img.split("/")
 	name = path[-1]
 	return name
 
-def copyimg(img): # Try to copy the image
-	name = getName(img)
+def getFullName(img, app_name): # Return the appname.extensionimg
+	img_name = getName(img)
+	print (img_name)
+	print (app_name)
+	return app_name.split(".")[0]+"."+img_name.split(".")[1]
 
+def copyimg(img, name): # Try to copy the image
+	print ("Open: "+img)
+	print (name)
 	try:
 		f_origin = open(img,"rb")
 		r = f_origin.read()
@@ -113,7 +121,7 @@ def copyimg(img): # Try to copy the image
 		w = f_destiny.write(r)
 		f_destiny.close()
 		return True
-	except:
+	except IOerror:
 		return False
 
 
@@ -127,11 +135,13 @@ def change(app,img):
 		
 		new_file = ""
 		for line in lines:
-			if 'Icon' in line:
-				line = 'Icon=' + img
+			line_s = line.split("=")
+			if line_s[0] == 'Icon':
+				line = 'Icon='+img
 			else:
 				pass
-			new_file += line + '\n'
+			if line != "":
+				new_file += line + '\n'
 		 	
 		try:
 			f = open('/usr/share/applications/' + app,'wt')
