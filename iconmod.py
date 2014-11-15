@@ -36,7 +36,7 @@ def main():
 	app = str(input("Write the name of the app: "))
 	
 	if not search_in_dir(app_directory, app):
-		erros.noApp()
+		errors.noApp()
 	else:
 		print ("\n\n*   For security reasons   *\n\n")
 
