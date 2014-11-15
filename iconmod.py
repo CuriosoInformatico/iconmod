@@ -53,8 +53,7 @@ def main():
 					errors.permissionError()
 
 		else:
-			print ("Wrong APP name")
-			input("Press Enter to end")
+			errors.noApp()
 
 
 def search_in_dir(directory,app):
