@@ -103,6 +103,9 @@ def main():
 						name = getFullName(img,app_confirmed) # Name of the photo in  /opt/photos/
 						if copyimg(img, name): # If the program can copy the image
 							change(app_confirmed,"/opt/iconmod/photos/"+name) # Change the files
+						else:
+							print ("\n")
+							errors.permissionError()
 				else:
 					errors.noApp()
 
@@ -185,19 +188,6 @@ def tryopen(verbose): # Try to verify if the image exists
 		print ('Path confirmed')
 		return img
 	except:
-		if verbose:
-			while True:
-				print('Error on the path')
-				print ('Try another path?[y][n]')
-				x = str(input('    >>'))
-				if x == 'y' or x == 'Y':
-					tryopen(True)
-					return img
-				elif x == 'n' or x == 'N':
-					return False
-				else:
-					pass
-		else:
 			errors.noImg()
 
 def getName(img): # Get the last Item of a path
@@ -244,12 +234,16 @@ def change(app,img):
 				pass
 			if line != "":
 				new_file += line + '\n'
-		 	
-		f = open(APP_DIRECTORY + app,'wt')
-		f.write(new_file)
-		f.close()
-		print ("\n\nAll Done my friend! :D!")
-		errors.pause()
+		
+		try: 
+			print ("Intentando canbiar")	
+			f = open(APP_DIRECTORY + app,'wt')
+			f.write(new_file)
+			f.close()
+			print ("\n\nAll Done my friend! :D!")
+			errors.pause()
+		except:
+			errors.permissionError()
 
 	except:
 		errors.permissionError()
