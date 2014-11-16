@@ -13,7 +13,7 @@ Type=Application
 Encoding=UTF-8
 Name=IconMod
 Comment=Customize your Icons
-Exec=sudo iconmod
+Exec=sudo iconmod -g
 Icon=/opt/iconmod/photos/icon.png
 Terminal=true
 " > /usr/share/applications/iconmod.desktop 
