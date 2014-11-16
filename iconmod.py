@@ -85,7 +85,7 @@ def main():
 		# In the case of 3 parameters...
 		elif len(sys.argv) == 4:
 			if sys.argv[1] == "-s" or sys.argv[1] == "--search" and sys.argv[3] == "-i" or sys.argv[3] == "--icon":
-				errors.missingError('icon')
+				errors.missingError('path')
 
 		# In the case of 4 parameters...
 		elif len(sys.argv) == 5:
