@@ -1,7 +1,7 @@
 <img src="https://raw.githubusercontent.com/CuriosoInformatico/iconmod/master/icon.png"/>
 
 
-Actual Version: 1.1
+Actual Version: 1.2
 
 
 English:
@@ -14,7 +14,7 @@ To install run setup.sh as superuser or root
 
 ***
 
-Versión actual: 1.1
+Versión actual: 1.2
 
 Spanish:
 
