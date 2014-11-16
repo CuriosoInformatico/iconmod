@@ -41,5 +41,5 @@ def missingError(miss):
 		print("Missing the name of the application\n")
 	elif miss == 'icon':
 		print("Missing Icon: \nAdd the -i parameter to specify the path of the image\n")
-	elif miss == 'path'
+	elif miss == 'path':
 		print("Missing Icon: \nYou need to add the path of the image\n")
