@@ -64,7 +64,7 @@ def main():
 		# In the case of 1 parameter...
 		elif len(sys.argv) == 2:
 			if sys.argv[1] == "-h" or sys.argv[1] == "--help":
-				print(APP_NAME, VERSION + "\n" + HELP)
+				print(APP_NAME, VERSION , "\n" + HELP)
 			elif sys.argv[1] == "-v" or sys.argv[1] == "--version":
 				print(nombre, version)
 			elif sys.argv[1] == "-s" or sys.argv[1] == "--search":
