@@ -236,7 +236,7 @@ def change(app,img):
 				new_file += line + '\n'
 		
 		try: 
-			print ("Intentando canbiar")	
+			print ("Changing files...")	
 			f = open(APP_DIRECTORY + app,'wt')
 			f.write(new_file)
 			f.close()
