@@ -30,10 +30,13 @@ def getName(img): # Get the last Item of a path
 	return name
 
 def getFullName(img, app_name): # Return the appname.extensionimg
-	img_name = getName(img)
-	print (img_name)
-	print (app_name)
-	return app_name.split(".")[0]+"."+img_name.split(".")[1]
+	try:
+		img_name = getName(img)
+		print (img_name)
+		print (app_name)
+		return app_name.split(".")[0]+"."+img_name.split(".")[1]
+	except:
+		errors.wrongFormat()
 
 def downloadImg(img_name, url): # Download the image
 	if confirm (img_name, '/opt/iconmod/photos/'):

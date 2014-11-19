@@ -46,6 +46,12 @@ def wrongArgs():
 	pause()
 	quit()
 
+def wrongFormat():
+	print ("Hey!\nIt seems like you write wrong something.")
+	print ("See the doc on https://github.com/CuriosoInformatico/iconmod/wiki")
+	pause()
+	quit()
+
 def missingError(miss):
 	if miss == 'name':
 		print("Missing the name of the application\n")
