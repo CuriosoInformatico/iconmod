@@ -10,7 +10,6 @@
 
 
 """
-
 Created by Samuel López Saura
 @E-mail: samuellopezsaura@gmail.com
 @Web Page: http://www.blog.curiosoinformatico.com
@@ -22,6 +21,9 @@ Helped by Fanta (get the idea for the 1.2 from here):
         http://pastebin.com/RwDCPGDi
        For Fanta: Gracias por ayudar :)
 
+Actual Version is a 1.3 BETA
+
+Help to develop here: github.com/curiosoinformatico/iconmod
 """
 
 
@@ -29,6 +31,7 @@ Helped by Fanta (get the idea for the 1.2 from here):
 import sys
 import os
 import errors
+import actions
 
 
 # Variables
@@ -37,6 +40,8 @@ VERSION = 1.2
 APP_DIRECTORY = '/usr/share/applications/'
 HELP = """
 -s | --search \t\tSearch an application
+------------------------------------------------
+-u | --url    \t\tGet the image from the network
 ------------------------------------------------
 -i | --icon    \t\tSearch    an    icon
 ------------------------------------------------
@@ -48,7 +53,10 @@ HELP = """
 ------------------------------------------------
 
 Example of use to change an icon:
-iconmod -s firefox -i /home/user/downloads/icon.png
+------------------------------------------------
+|-iconmod -s firefox -i /home/user/downloads/icon.png
+|-iconmod -s firefox -u https://www.debian.org/Pics/openlogo-50.png
+
 """
 # Code :)
 
@@ -76,7 +84,7 @@ def main():
 		elif len(sys.argv) == 3:
 			if sys.argv[1] == "-s" or sys.argv[1] == "--search":
 				app = sys.argv[2]
-			if not searchInDir(app,False):
+			if not searchInDir(app, False):
 				errors.noApp()
 				exit(1)
 			else:
@@ -87,27 +95,35 @@ def main():
 			if sys.argv[1] == "-s" or sys.argv[1] == "--search" and sys.argv[3] == "-i" or sys.argv[3] == "--icon":
 				errors.missingError('path')
 
+
+################################(-- When the magic happens --)##########################################################
+
+
 		# In the case of 4 parameters...
 		elif len(sys.argv) == 5:
-			if sys.argv[1] == "-s" or sys.argv[1] == "--search" and sys.argv[3] == "-i" or sys.argv[3] == "--icon":
-				app = sys.argv[2]
-				img = sys.argv[4]
 
-				if not searchInDir(app,False):
-					errors.noApp()
-				else:
-					app_confirmed = (app + ".desktop")
+			app = sys.argv[2]
+			img = sys.argv[4]
+			
+			if not searchInDir(app, False):
+				errors.noApp()
+				quit()
+			else:
+				app_confirmed = (app + ".desktop")
 
-				if confirm(app_confirmed):
-					if tryopen(False):
-						name = getFullName(img,app_confirmed) # Name of the photo in  /opt/photos/
-						if copyimg(img, name): # If the program can copy the image
-							change(app_confirmed,"/opt/iconmod/photos/"+name) # Change the files
-						else:
-							print ("\n")
-							errors.permissionError()
-				else:
-					errors.noApp()
+			# Local Image			
+			if (sys.argv[1] == "-s" or sys.argv[1] == "--search") and (sys.argv[3] == "-i" or sys.argv[3] == "--icon"):
+				actions.changeAppLocalIcon(app_confirmed,img)
+
+			# Image on the network
+			elif (sys.argv[1] == "-s" or sys.argv[1] == "--search") and (sys.argv[3] == "-u" or sys.argv[3] == "--url"):
+				actions.changeAppNetworkIcon(app_confirmed,img)
+
+			else:
+				errors.wrongArgs()
+
+		else:
+			errors.wrongArgs()
 
 
 # Guided mode. A mode were the IconMod is asking for parameters
@@ -117,41 +133,34 @@ def main():
 def guidedMode():
 	print ("""
 		Welcome to 
-	 ___                __  __           _   _   ____  
-	|_ _|___ ___  _ __ |  \/  | ___   __| | / | |___ \ 
-	 | |/ __/ _ \| '_ \| |\/| |/ _ \ / _` | | |   __) |
-	 | | (_| (_) | | | | |  | | (_) | (_| | | |_ / __/ 
-	|___\___\___/|_| |_|_|  |_|\___/ \__,_| |_(_)_____|
+
+	 ___                __  __           _   _   _____ 
+	|_ _|___ ___  _ __ |  \/  | ___   __| | / | |___ / 
+	 | |/ __/ _ \| '_ \| |\/| |/ _ \ / _` | | |   |_ \ 
+	 | | (_| (_) | | | | |  | | (_) | (_| | | |_ ___) |
+	|___\___\___/|_| |_|_|  |_|\___/ \__,_| |_(_)____/ 
 	                                                   
+				  Beta... just testing  :D
 
 		""")
 	print ("A Free OpenSource script by Curiosoinformatico.com\n\n")
 
 	app = str(input("Write the name of the app: "))
 	
-	if not searchInDir(app,True):
+	if not searchInDir(app, True):
 		errors.noApp()
 	else:
 		print ("\n\n*   For security reasons   *\n\n")
-
-		app_confirmed = str(input("Write the hole name of the file: "))
+		app_confirmed = str(input("Write the hole name of the file: ")).strip()
+		place = str(input("Is the image local or on the Network? [L][n]")).strip()
 		
-
-		if confirm(app_confirmed):
-			print ("APP Confirmed")
-			img = tryopen(True)
-			if img: # If the image exist
-				name = getFullName(img,app_confirmed) # Name of the photo in  /opt/photos/
-				if copyimg(img, name): # If the program can copy the image
-					change(app_confirmed,"/opt/iconmod/photos/"+name) # Change the files
-				else:
-					errors.permissionError()
-
+		if place == 'n' or place == 'N':
+			url = str(input("Write the URL of the image: ")).strip()
+			actions.changeAppNetworkIcon(app_confirmed,url)
 		else:
-			errors.noApp()
+			img = str(input("Write the hole path of the image: ")).strip()
+			actions.changeAppLocalIcon(app_confirmed,img)
 
-
-# Usefull functions
 def searchInDir(app,verbose):
 	isthere = False
 	that_name = []
@@ -168,85 +177,6 @@ def searchInDir(app,verbose):
 			print (ele)
 
 	return isthere
-
-
-def confirm(data_confirmed):
-	for ele in os.listdir(APP_DIRECTORY):
-		if data_confirmed == ele:
-			return True
-		else:
-			pass	
-	return False
-
-def tryopen(verbose): # Try to verify if the image exists
-	if verbose:
-		img = str(input("Write please the path of the image: "))
-	else:
-		img = sys.argv[4]
-	try:
-		open(img,'rb').close()
-		print ('Path confirmed')
-		return img
-	except:
-			errors.noImg()
-
-def getName(img): # Get the last Item of a path
-	path = img.split("/")
-	name = path[-1]
-	return name
-
-def getFullName(img, app_name): # Return the appname.extensionimg
-	img_name = getName(img)
-	print (img_name)
-	print (app_name)
-	return app_name.split(".")[0]+"."+img_name.split(".")[1]
-
-def copyimg(img, name): # Try to copy the image
-	print ("Open: "+img)
-	print (name)
-	try:
-		f_origin = open(img,"rb")
-		r = f_origin.read()
-		f_origin.close()
-
-		f_destiny = open("/opt/iconmod/photos/"+name, "wb")
-		w = f_destiny.write(r)
-		f_destiny.close()
-		return True
-	except:
-		return False
-
-
-				
-
-def change(app,img):
-	try:
-		f = open(APP_DIRECTORY + app,'rt')
-		lines = f.read().split('\n')
-		f.close()
-		
-		new_file = ""
-		for line in lines:
-			line_s = line.split("=")
-			if line_s[0] == 'Icon':
-				line = 'Icon='+img
-			else:
-				pass
-			if line != "":
-				new_file += line + '\n'
-		
-		try: 
-			print ("Changing files...")	
-			f = open(APP_DIRECTORY + app,'wt')
-			f.write(new_file)
-			f.close()
-			print ("\n\nAll Done my friend! :D!")
-			errors.pause()
-		except:
-			errors.permissionError()
-
-	except:
-		errors.permissionError()
 
 # End of the Script ##
 

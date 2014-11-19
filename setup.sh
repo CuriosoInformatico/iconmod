@@ -3,6 +3,8 @@
 mkdir /opt/iconmod > setuplog.txt
 cp iconmod.py /opt/iconmod/iconmod.py >> setuplog.txt
 cp errors.py /opt/iconmod/errors.py >> setuplog.txt
+cp actions.py /opt/iconmod/actions.py >> setuplog.txt
+cp do.py /opt/iconmod/do.py >> setuplog.txt
 ln -s /opt/iconmod/iconmod.py /usr/bin/iconmod >> setuplog.txt
 mkdir /opt/iconmod/photos >> setuplog.txt
 cp icon.png /opt/iconmod/photos/icon.png >> setuplog.txt

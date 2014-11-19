@@ -36,6 +36,16 @@ def noImg():
 	print ("Hey!\nI think you write wrong the path of the image")
 	pause()
 
+def wrongUrl():
+	print ("Hey!\nIt seems like you bring a link that is broke")
+	pause()
+	exit(1)
+
+def wrongArgs():
+	print ("Hey!\nYou write wrong the arguments... Try iconmod --help")
+	pause()
+	quit()
+
 def missingError(miss):
 	if miss == 'name':
 		print("Missing the name of the application\n")
