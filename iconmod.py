@@ -21,7 +21,7 @@ Helped by Fanta (get the idea for the 1.2 from here):
         http://pastebin.com/RwDCPGDi
        For Fanta: Gracias por ayudar :)
 
-Actual Version is a 1.3 BETA
+Actual Version is a 1.4
 
 Help to develop here: github.com/curiosoinformatico/iconmod
 """
@@ -134,13 +134,11 @@ def guidedMode():
 	print ("""
 		Welcome to 
 
-	 ___                __  __           _   _   _____ 
-	|_ _|___ ___  _ __ |  \/  | ___   __| | / | |___ / 
-	 | |/ __/ _ \| '_ \| |\/| |/ _ \ / _` | | |   |_ \ 
-	 | | (_| (_) | | | | |  | | (_) | (_| | | |_ ___) |
-	|___\___\___/|_| |_|_|  |_|\___/ \__,_| |_(_)____/ 
-	                                                   
-				  Beta... just testing  :D
+		 ___                __  __           _   _  _  _     _ 
+		|_ _|___ ___  _ __ |  \/  | ___   __| | / || || |   | |
+		 | |/ __/ _ \| '_ \| |\/| |/ _ \ / _` | | || || |_  | |
+		 | | (_| (_) | | | | |  | | (_) | (_| | | ||__   _| |_|
+		|___\___\___/|_| |_|_|  |_|\___/ \__,_| |_(_) |_|   (_)
 
 		""")
 	print ("A Free OpenSource script by Curiosoinformatico.com\n\n")

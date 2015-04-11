@@ -4,11 +4,13 @@
 import os
 import errors
 import urllib.request
+from configparser import ConfigParser
 
 # Usefull functions
 APP_DIRECTORY = '/usr/share/applications/'
 
-def confirm(data_confirmed, place = APP_DIRECTORY): # Try to confirm if something is in the directory
+def confirm(data_confirmed, place = APP_DIRECTORY): 
+	# Try to confirm if something is in the directory
 	for ele in os.listdir(place):
 		if data_confirmed == ele:
 			return True
@@ -63,30 +65,17 @@ def copyImg(img, name): # Try to copy the image
 	except:
 		return False
 
+
 def change(app,img):
 	try:
-		f = open(APP_DIRECTORY + app,'rt')
-		lines = f.read().split('\n')
-		f.close()
-		
-		new_file = ""
-		for line in lines:
-			line_s = line.split("=")
-			if line_s[0] == 'Icon':
-				line = 'Icon=' + img
-			else:
-				pass
-			if line != "":
-				new_file += line + '\n'
-		
-		try: 
-			print ("Changing files...")	
-			f = open(APP_DIRECTORY + app, 'wt')
-			f.write(new_file)
-			f.close()
-			return True
-		except:
-			return False
-
+		fullPath = APP_DIRECTORY + app
+		config = ConfigParser()
+		config.optionxform = str # case sensitive
+		config.read(fullPath)
+		config['Desktop Entry']['Icon'] = img
+		with open(fullPath, 'wt') as fich:
+			config.write(fich)
+			print ('Already done! File modified: '+ fullPath)
+		return True
 	except:
 		return False
